@@ -1,0 +1,18 @@
+1. The fast route responded before the slow one,
+which shows that Node.js uses asynchronous processes
+to manage requests. It shows that the slow request did not
+hold up the server responding to the fast request, which would only
+be possible if tasks were being managed with an asynchronous structure
+in the backend.
+
+2. The event loop got a request from the fast version, then the slow version. Then,
+it handed the two tasks off to the multiple worker threads, who provided the outputs
+as they were completed, which then were placed into the event queue. As the outputs
+arrived to the event queue, they were popped off to the client-side by the event loop.
+
+3. This way of handling many requests at once would be useful in such an appication
+because it means that users don't have to wait until every task request ahead of theirs
+is fulfilled, they only need to wait until one of the many worker threads is done 
+with it before receiving a response. This helps the speed at which users preceive the
+application to be processing requests, which can make or break the user's positive
+experience of the application. 
