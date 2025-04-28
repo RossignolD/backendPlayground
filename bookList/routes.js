@@ -1,7 +1,8 @@
 const express = require("express");
 const bookListRouter = express.Router();
 const bookListModel = require("./model");
-const tasklistRouter = require("../taskList/routes");
+const { showAllBooks } = require("./model");
+const { showBookById } = require("./model");
 
 function isAuthenticated(req, res, next) {
   console.log(req.headers.authorization);
@@ -17,15 +18,15 @@ function isAuthenticated(req, res, next) {
 }
 
 bookListRouter.get("/", (req, res) => {
-  res.json(bookListModel.showAllBooks());
+  res.json(showAllBooks());
   res.sendStatus(200);
 });
 
 bookListRouter.get("/:id", (req, res) => {
-  if (bookListModel.showBookById(req.params.id) === undefined) {
+  if (showBookById(req.params.id) === undefined) {
     res.sendStatus(404);
   } else {
-    res.json(bookListModel.showBookById(req.params.id));
+    res.json(showBookById(req.params.id));
     res.sendStatus(200);
   }
 });
@@ -40,17 +41,17 @@ bookListRouter.post("/", isAuthenticated, (req, res) => {
 });
 
 bookListRouter.put("/:id", isAuthenticated, (req, res) => {
-  if (bookListModel.showBookById(req.params.id) === undefined) {
+  if (showBookById(req.params.id) === undefined) {
     res.sendStatus(404);
     return;
   } else {
-    bookListModel.updateBookById(req.body);
+    bookListModel.updateBookById(req.params.id, req.body);
     res.sendStatus(204);
   }
 });
 
 bookListRouter.delete("/:id", isAuthenticated, (req, res) => {
-  if (bookListModel.showBookById(req.params.id) === undefined) {
+  if (showBookById(req.params.id) === undefined) {
     res.sendStatus(404);
   } else {
     const { id } = req.params;

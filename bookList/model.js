@@ -37,18 +37,30 @@ const addBookToList = (book) => {
   return book;
 };
 
-const updateBookById = (id) => {
-  const bookIndex = bookList.findIndex((book) => book.id == id);
-  if (bookIndex < 0) throw new Error("out of bounds");
-  bookList.splice(bookIndex, 1, book);
+const updateBookById = (id, replacementBook) => {
+  console.log("hello", id);
+  let oldBook = bookList.find((book) => book.id == id);
+  console.log(oldBook);
+  if (oldBook) {
+    bookList.splice(bookList.indexOf(oldBook), 1, replacementBook);
+    console.log(oldBook);
+  } else {
+    throw new Error("out of bounds");
+  }
+
   return bookList;
 };
 
 const deleteBookById = (id) => {
-  const bookIndex = bookList.findIndex((book) => book.id == id);
-  if (bookIndex < 0) throw new Error("out of bounds");
-  bookList.splice(bookIndex, 1);
-  console.log("Book deleted successfully");
+  const bookToDelete = bookList.find((book) => book.id == id);
+  if (bookToDelete) {
+    console.log(bookList.indexOf(bookToDelete));
+    bookList.splice(bookList.indexOf(bookToDelete), 1);
+
+    console.log("Book deleted successfully");
+  } else {
+    throw new Error("out of bounds");
+  }
 };
 
 module.exports = {
